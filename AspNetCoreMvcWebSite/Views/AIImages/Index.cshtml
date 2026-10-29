@@ -1,0 +1,79 @@
+@model IEnumerable<AIImage>
+@{
+    ViewData["Title"] = "AI Images";
+    var loggedIn = User.Identity?.IsAuthenticated ?? false;
+    var isAdmin = User.IsInRole("admin");
+}
+
+<div class="parallax">
+    <section class="list-hero">
+        <h1 class="main-heading">List of AI Images</h1>
+        @if (loggedIn)
+        {
+               <p class="upload-text"><a asp-action="Create" class="upload-button">Click here to upload a new AI image.</a></p>
+        }
+        else
+        {
+            <p class="upload-text">
+                Please <a asp-area="Identity" asp-page="/Account/Login">login</a> or
+                <a asp-area="Identity" asp-page="/Account/Register">register</a> to upload and like AI images.
+            </p>
+        }
+    </section>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <p class="list-message">@ViewBag.ErrorMessage</p>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="list-message">@TempData["ErrorMessage"]</p>
+    }
+
+    @* One row per image. The id "block-5" is the anchor the Home page thumbnails and the Like button jump to. *@
+    <div class="ai-list">
+        @foreach (var item in Model)
+        {
+            <article class="ai-row" id="@($"block-{item.Id}")">
+                <div class="ai-row-image">
+                    <img src="@Url.Content(item.ImageUrl)" alt="AI image made with @item.ImageGenerator" />
+                </div>
+                <div class="ai-row-body">
+                    <h3>
+                        @if (isAdmin)
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id">@item.ImageGenerator</a>
+                        }
+                        else
+                        {
+                            @item.ImageGenerator
+                        }
+                    </h3>
+                    <p>@item.Prompt</p>
+
+                    @* Visitor: no buttons.  Member: Like only.  Admin: Like, Edit and Delete. *@
+                    @if (loggedIn)
+                    {
+                        <div class="ai-actions">
+                            <form asp-action="IncreaseLike" asp-route-id="@item.Id" method="post">
+                                @if (item.canIncreaseLike)
+                                {
+                                    <button type="submit" class="btn btn-primary btn-sm">Like (@item.Like)</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-primary btn-sm" disabled>Like (@item.Like)</button>
+                                }
+                            </form>
+                            @if (isAdmin)
+                            {
+                                <a class="btn btn-success btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            }
+                        </div>
+                    }
+                </div>
+            </article>
+        }
+    </div>
+</div>

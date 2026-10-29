@@ -1,0 +1,34 @@
+@model AIImage
+@{
+    ViewData["Title"] = "AI Image Details";
+}
+
+<div class="parallax">
+    <h1 class="page-title">AI Image Details</h1>
+
+    <div class="ai-form-grid">
+        <div class="ai-form">
+            <dl class="detail-list">
+                <dt>@Html.DisplayNameFor(m => m.Prompt)</dt>
+                <dd>@Model.Prompt</dd>
+                <dt>@Html.DisplayNameFor(m => m.ImageGenerator)</dt>
+                <dd>@Model.ImageGenerator</dd>
+                <dt>@Html.DisplayNameFor(m => m.UploadDate)</dt>
+                <dd>@Model.UploadDate.ToString("dd/MM/yyyy hh:mm tt")</dd>
+                <dt>@Html.DisplayNameFor(m => m.Filename)</dt>
+                <dd>@Model.Filename</dd>
+                <dt>@Html.DisplayNameFor(m => m.Like)</dt>
+                <dd>@Model.Like</dd>
+            </dl>
+            <p>
+                <a class="btn btn-success btn-sm" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+            </p>
+        </div>
+        <div class="ai-preview">
+            <img src="@Url.Content(Model.ImageUrl)" alt="AI image made with @Model.ImageGenerator" />
+        </div>
+        <div class="back-link">
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>

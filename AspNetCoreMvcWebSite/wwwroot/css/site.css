@@ -1,0 +1,1007 @@
+/* ==========================================================================
+   site.css - all styles for ArtAI (no internal <style> or inline styles are used)
+   Sections:  1 Base  2 Menu  3 Footer  4 Headings  5 Parallax + Home hero
+              6 Home info blocks  7 Upload section + thumbnails  8 AI Images list
+              9 Create / Edit / Details / Delete  10 Contact  11 Login/Register
+              12 Error page  13 Responsive (media queries)
+   Breakpoints used (same as the brief):  >= 768px  |  576px - 767px  |  < 576px
+   ========================================================================== */
+
+/* ---------- 1. Base ---------- */
+html {
+    font-size: 16px;
+}
+
+body {
+    margin: 0;                      /* full-width layout: no blank space on any side */
+    display: flex;                  /* flex column keeps the footer at the bottom on short pages */
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+}
+
+main {
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+a {
+    color: #ffe680;
+}
+
+a:hover {
+    color: #fff;
+}
+
+/* ---------- 2. Menu ---------- */
+.site-nav {
+    background-color: #000;
+    padding: 0.2rem 0.75rem;
+    margin: 0;                      /* no gap between the menu and the page */
+}
+
+.site-nav .navbar-brand,
+.site-nav .nav-link {
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.site-nav .navbar-brand {
+    font-weight: 700;
+    margin-right: 1rem;
+}
+
+.site-nav .nav-link:hover,
+.site-nav .nav-link:focus {
+    color: #f8bd08;
+}
+
+/* The Logout button is a <button> that must look like the other links */
+.site-nav .btn-link {
+    text-decoration: none;
+    border: 0;
+}
+
+/* ---------- 3. Footer ---------- */
+.site-footer {
+    background-color: #000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 0.4rem;
+}
+
+.footer-links a:hover {
+    color: #f8bd08;
+}
+
+.footer-icons {
+    list-style: none;
+    display: flex;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+    font-size: 0.75rem;
+    border-radius: 2px;
+}
+
+.icon-google   { background-color: #dd4b39; }
+.icon-youtube  { background-color: #bb0000; }
+.icon-twitter  { background-color: #55acee; }
+.icon-facebook { background-color: #3b5998; }
+.icon-linkedin { background-color: #007bb6; }
+
+.footer-icons a:hover {
+    opacity: 0.8;
+}
+
+/* ---------- 4. Headings shared by several pages ---------- */
+
+/* Big gradient heading used on Home, Contact, AI Images list ...
+   background-clip:text paints the gradient only inside the letters. */
+.main-heading {
+    font-family: 'Anton', sans-serif;
+    background-image: linear-gradient(to right, brown, brown, yellow, white, yellow, brown, brown);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: brown;
+    padding: 9vw 2vw 0vw 2vw;
+    text-align: center;
+    font-size: 7vw;
+    margin: 0;
+}
+
+/* The Contact page uses the same heading without the outline */
+.main-heading.no-stroke {
+    -webkit-text-stroke-width: 0;
+}
+
+/* Smaller heading used on Create / Edit / Details / Delete */
+.page-title {
+    font-family: 'Anton', sans-serif;
+    text-shadow: 4px 4px 0px navy, 4px 4px 8px white;
+    padding: 3vw 0vw 2vw 0vw;
+    text-align: center;
+    color: #f8bd08;
+    font-size: 4vw;
+    margin: 0;
+}
+
+/* ---------- 5. Parallax background + Home hero ---------- */
+
+/* background-attachment: fixed keeps the picture still while the content scrolls over it
+   (parallax scrolling). */
+.parallax {
+    background-image: url('../images/bg.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.hero {
+    min-height: 85vh;
+}
+
+.hero-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2vw;
+    text-align: center;
+    padding: 1vw 12vw 4vw 12vw;
+    margin: 0;
+    text-shadow: 1px 1px 4px #000;
+}
+
+/* ---------- 6. Home info blocks (built by site.js) ---------- */
+.home-blocks {
+    padding: 4vw 3vw;
+}
+
+/* Each block starts invisible. site.js adds the class "visible" only while the block
+   is completely inside the browser window. */
+.reveal-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 0.6vw;
+    margin: 30vh 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.reveal-block.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.info-card {
+    flex: 0 1 34vw;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    padding: 1.2vw 1.6vw;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.info-card h3 {
+    font-family: 'Anton', sans-serif;
+    color: #f8bd08;
+    font-size: 4vw;
+    text-shadow: 2px 2px 0px navy, 2px 2px 4px white;
+    margin: 0 0 0.5vw 0;
+}
+
+.info-card p {
+    font-family: 'Lato', sans-serif;
+    color: #fff;
+    font-size: 1.5vw;
+    margin: 0;
+}
+
+.read-more {
+    display: inline-block;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    padding: 0 0.4em;
+    color: #fff;
+    font-size: 1.2vw;
+    text-decoration: none;
+}
+
+.read-more:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.tile-pair {
+    display: flex;
+    gap: 0.6vw;
+}
+
+/* The two square blocks. site.js swaps the picture for the text on mouse over. */
+.square-block {
+    position: relative;
+    display: block;
+    width: 16vw;
+    height: 16vw;
+    overflow: hidden;
+    background-color: #000;
+    text-decoration: none;
+}
+
+.square-block img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.tile-text {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1vw;
+    color: #fff;
+    text-align: center;
+    font: normal 1.2vw arial;
+    opacity: 0;
+}
+
+.tile-text p {
+    margin: 0;
+}
+
+.tile-art .tile-text     { background-color: rgba(61, 20, 20, 0.93); }
+.tile-music .tile-text   { background-color: rgba(20, 36, 61, 0.93); }
+.tile-writing .tile-text { background-color: rgba(20, 61, 36, 0.93); }
+
+/* site.js adds "show-text" on mouseenter and removes it on mouseleave */
+.square-block.show-text .tile-text {
+    opacity: 1;
+}
+
+.square-block:hover {
+    opacity: 0.9;
+    transition: 2s ease;
+}
+
+/* ---------- 7. Upload section + thumbnails ---------- */
+.upload-section {
+    text-align: center;
+    padding: 6vw 3vw 8vw 3vw;
+}
+
+.upload-heading {
+    font-family: 'Anton', sans-serif;
+    color: #f8bd08;
+    font-size: 4vw;
+    text-shadow: 2px 2px 0px navy, 2px 2px 4px white;
+    margin: 0;
+}
+
+.upload-text {
+    font-family: 'Montserrat', sans-serif;
+    font-style: italic;
+    font-size: 1.2vw;
+    text-align: center;
+    margin: 0.5vw 0 0 0;
+    text-shadow: 1px 1px 4px #000;
+}
+
+.upload-text a {
+    color: #ddd;
+}
+   /* Usability fix: testers said the upload link was too small and easy to miss,
+      so it is now a large, highlighted button. */
+   .upload-text a.upload-button {
+       display: inline-block;
+       background-color: #f8bd08;
+       color: #000;
+       font-style: normal;
+       font-weight: 700;
+       font-size: 1.6rem;
+       text-decoration: none;
+       padding: 0.6rem 1.6rem;
+       border-radius: 8px;
+       box-shadow: 0 0 12px rgba(248, 189, 8, 0.7);
+       transition: background-color 0.3s ease, transform 0.3s ease;
+   }
+
+   .upload-text a.upload-button:hover {
+       background-color: #fff;
+       color: #000;
+       transform: scale(1.05);
+   }
+
+   /* smaller button text on phones so it does not take over the screen */
+   @media (max-width: 575.98px) {
+       .upload-text a.upload-button {
+           font-size: 1.1rem;
+           padding: 0.5rem 1rem;
+       }
+   }
+
+/* Grid: at most 6 squares per row, equal blank space around each one */
+.thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2vw;
+    justify-items: center;
+    margin-top: 3vw;
+}
+
+.ai-thumb {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-image: linear-gradient(to right, #999, #fff, #999);
+    color: navy;
+    font: normal 1.2vw arial;
+    text-decoration: none;
+}
+
+.ai-thumb-label {
+    padding: 0.5vw;
+    text-align: center;
+}
+
+/* The picture is invisible until the mouse is over the square, then it fades in over 2 seconds */
+.ai-thumb img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.ai-thumb:hover img {
+    opacity: 1;
+}
+
+/* ---------- 8. AI Images list ---------- */
+.list-hero {
+    padding-bottom: 3vw;
+}
+
+.list-hero .main-heading {
+    padding-top: 6vw;
+}
+
+.list-message {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 0.5rem;
+    margin: 0;
+}
+
+.ai-list {
+    width: 100%;
+}
+
+.ai-row {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-height: 18vw;
+}
+
+/* Rows alternate between orange and blue gradients */
+.ai-row:nth-child(odd) {
+    background-image: linear-gradient(to bottom, #ff9933, #ffe6cc, white, white);
+}
+
+.ai-row:nth-child(even) {
+    background-image: linear-gradient(to bottom, #3333ff, #ccccff, white, white);
+}
+
+.ai-row-image {
+    flex: 0 0 38%;
+}
+
+.ai-row-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ai-row-body {
+    flex: 1 1 auto;
+    padding: 1.5vw 3vw;
+}
+
+.ai-row-body h3 {
+    font-family: 'Oxygen', sans-serif;
+    color: navy;
+    text-shadow: 2px 2px 0px white, 2px 2px 4px navy;
+    letter-spacing: 7px;
+    text-transform: uppercase;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.ai-row-body h3 a {
+    color: navy;
+    text-decoration: none;
+}
+
+.ai-row-body p {
+    font-family: Arial, sans-serif;
+    color: black;
+    font-size: 1vw;
+}
+
+.ai-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.ai-actions form {
+    margin: 0;
+}
+
+/* ---------- 9. Create / Edit / Details / Delete ---------- */
+.ai-form-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-areas:
+        "form image"
+        "back image";
+    column-gap: 2rem;
+    row-gap: 0.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 3vw 3vw 3vw;
+    align-items: start;
+}
+
+.ai-form {
+    grid-area: form;
+    font-size: 0.85rem;
+}
+
+.ai-preview {
+    grid-area: image;
+}
+
+.ai-preview img {
+    display: block;
+    width: 100%;
+    border: 1px solid #fff;
+}
+
+.back-link {
+    grid-area: back;
+    font-size: 0.85rem;
+}
+
+.ai-form .form-label {
+    margin: 0.4rem 0 0.1rem 0;
+    font-size: 0.85rem;
+}
+
+.ai-form .form-control {
+    font-size: 0.85rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.ai-form .text-danger {
+    font-size: 0.8rem;
+    color: #ff8080 !important;
+}
+
+.detail-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.4rem 2rem;
+    margin: 0 0 1rem 0;
+}
+
+.detail-list dt {
+    font-weight: 700;
+}
+
+.detail-list dd {
+    margin: 0;
+}
+
+.delete-box {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 3vw 3vw 3vw;
+}
+
+.delete-question {
+    font-family: 'Anton', sans-serif;
+    text-shadow: 2px 2px 0px navy, 2px 2px 4px white;
+    color: yellow;
+    font-size: 2em;
+    margin: 0;
+}
+
+.delete-subtitle {
+    font-size: 0.85rem;
+    margin: 0.3rem 0 0 0;
+}
+
+.delete-box hr {
+    border-color: #ffe680;
+    opacity: 1;
+    margin: 0.3rem 0 0.8rem 0;
+}
+
+.delete-separator {
+    margin: 0 0.4rem;
+}
+
+/* ---------- 10. Contact ---------- */
+.contact-page {
+    padding-bottom: 5vw;
+}
+
+.contact-row {
+    margin: 0;
+    padding: 3vw 3vw 0 3vw;
+}
+
+.contact-box {
+    height: 100%;
+    border: 1px solid white;
+    box-shadow: 10px 10px 0px 0px #f8f6b0;
+    background-color: rgba(0, 0, 70, 0.8);
+    padding: 1rem 1.2rem 1.4rem 1.2rem;
+    text-align: center;
+}
+
+.contact-box h2 {
+    font-family: 'Niconne', cursive;
+    color: yellow;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 0px navy, 2px 2px 2px white;
+    border-bottom: 1px solid #f8f6b0;
+    margin: 0 0 0.8rem 0;
+}
+
+.contact-box p {
+    font-family: Arial, sans-serif;
+    color: yellow;
+    font-size: 1vw;
+    margin: 0;
+}
+
+.contact-box a {
+    color: #fff;
+}
+
+/* ---------- 11. Register / Login (Identity pages) ---------- */
+.main-identity {
+    background-color: #212121;
+    color: #fff;
+    padding: 1rem 5vw 3rem 5vw;
+}
+
+.main-identity h1 {
+    font-size: 1.6rem;
+}
+
+.main-identity h2 {
+    font-size: 1.2rem;
+}
+
+.main-identity h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: yellow;
+    border-bottom: 1px solid #f8f6b0;
+    font-size: 1.6rem;
+}
+
+.main-identity a {
+    color: #8ab4f8;
+}
+
+   .main-identity .form-floating > label {
+       color: #000 !important;
+   }
+
+/* ---------- 12. Error page ---------- */
+.error-page {
+    min-height: 70vh;
+    text-align: center;
+}
+
+.error-text,
+.error-id {
+    font-size: 1.1rem;
+    margin: 1rem 0 0 0;
+}
+
+/* ---------- 13. Responsive design (media queries) ---------- */
+
+/* Tablet and larger phones: 576px to 767px */
+@media (max-width: 767.98px) {
+    .main-heading {
+        font-size: 9vw;
+        padding-top: 12vw;
+    }
+
+    .page-title {
+        font-size: 7vw;
+        padding-top: 5vw;
+    }
+
+    .hero-text {
+        font-size: 3vw;
+        padding: 2vw 6vw 6vw 6vw;
+    }
+
+    /* info blocks: text card on top, the two squares below */
+    .reveal-block {
+        flex-direction: column;
+        align-items: center;
+        gap: 2vw;
+        margin: 20vh 0;
+    }
+
+    .info-card {
+        flex: none;
+        width: 90vw;
+        padding: 3vw;
+    }
+
+    .info-card h3 {
+        font-size: 8vw;
+    }
+
+    .info-card p {
+        font-size: 3.2vw;
+    }
+
+    .read-more {
+        font-size: 3vw;
+    }
+
+    .tile-pair {
+        width: 90vw;
+        gap: 2vw;
+    }
+
+    .square-block {
+        flex: 1 1 0;
+        width: auto;
+        height: auto;
+        aspect-ratio: 1 / 1;
+    }
+
+    .tile-text {
+        font-size: 2.6vw;
+        padding: 2vw;
+    }
+
+    .upload-heading {
+        font-size: 8vw;
+    }
+
+    .upload-text {
+        font-size: 3vw;
+    }
+
+    .thumb-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3vw;
+        margin-top: 5vw;
+    }
+
+    .ai-thumb {
+        font-size: 2.6vw;
+    }
+
+    /* AI Images list: picture on top, text below */
+    .ai-row {
+        flex-direction: column;
+    }
+
+    .ai-row-image {
+        flex: none;
+        height: 55vw;
+    }
+
+    .ai-row-body {
+        padding: 4vw;
+    }
+
+    .ai-row-body h3 {
+        letter-spacing: 4px;
+    }
+
+    .ai-row-body p {
+        font-size: 3.2vw;
+    }
+
+    /* Create / Edit / Details: form first, picture second, back link last */
+    .ai-form-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "form"
+            "image"
+            "back";
+    }
+
+    .contact-box p {
+        font-size: 1rem;
+    }
+}
+
+/* Mid-size desktops / small laptops: 768px to 1199px - make vw text a little larger */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    .contact-box p {
+        font-size: 1.5vw;
+    }
+
+    .ai-row-body p {
+        font-size: 1.6vw;
+    }
+}
+
+/* Phones: below 576px */
+@media (max-width: 575.98px) {
+    .main-heading {
+        font-size: 11vw;
+    }
+
+    .hero-text {
+        font-size: 3.6vw;
+    }
+
+    .info-card h3 {
+        font-size: 10vw;
+    }
+
+    .info-card p {
+        font-size: 3.8vw;
+    }
+
+    .read-more {
+        font-size: 3.6vw;
+    }
+
+    .tile-text {
+        font-size: 3.2vw;
+    }
+
+    .upload-text {
+        font-size: 3.6vw;
+    }
+
+    .thumb-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ai-thumb {
+        font-size: 3.4vw;
+    }
+
+    .ai-row-body p {
+        font-size: 3.8vw;
+    }
+
+    .detail-list {
+        grid-template-columns: 1fr;
+        gap: 0.1rem 0;
+    }
+
+    .detail-list dd {
+        margin-bottom: 0.5rem;
+    }
+
+    .delete-question {
+        font-size: 1.4em;
+    }
+}
+
+/* Parallax with fixed backgrounds is not supported on iPhones/iPads, so use a normal background there */
+@media (hover: none) and (pointer: coarse) {
+    .parallax {
+        background-attachment: scroll;
+    }
+}
+
+
+/* ==========================================================================
+   PROMPT LAB PAGE (Home/PromptLab) - the extra creative page
+   These rules used to live in promptlab.css. They are now part of site.css so all
+   of the site's CSS is in one external style sheet. They only affect elements
+   with a "lab-" class, so no other page changes. Colours, fonts and headings match
+   the rest of the site.
+   ========================================================================== */
+
+
+.lab-page {
+    padding-bottom: 5vw;
+}
+
+.lab-intro {
+    max-width: 800px;
+    margin: 1rem auto 0 auto;
+    padding: 0 1rem;
+    text-align: center;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 4px #000;
+}
+
+/* Two cards side by side on desktop (CSS grid), stacked on tablets and phones */
+.lab-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 2rem auto 0 auto;
+    padding: 0 1.5rem;
+}
+
+.lab-card {
+    border: 1px solid white;
+    box-shadow: 10px 10px 0px 0px #f8f6b0;
+    background-color: rgba(0, 0, 70, 0.8);
+    padding: 1rem 1.2rem 1.4rem 1.2rem;
+}
+
+.lab-card h2 {
+    font-family: 'Niconne', cursive;
+    color: yellow;
+    font-size: 2.2rem;
+    text-shadow: 2px 2px 0px navy, 2px 2px 2px white;
+    border-bottom: 1px solid #f8f6b0;
+    margin: 0 0 0.8rem 0;
+}
+
+.lab-card label {
+    display: block;
+    margin-top: 0.7rem;
+    font-size: 0.9rem;
+    color: yellow;
+}
+
+.lab-card textarea,
+.lab-card select {
+    width: 100%;
+    margin-top: 0.2rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
+}
+
+.lab-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+}
+
+.lab-check label {
+    margin: 0;
+    color: #fff;
+}
+
+.lab-button {
+    margin-top: 1rem;
+    padding: 0.5rem 1.2rem;
+    border: 0;
+    border-radius: 4px;
+    background-color: #f8bd08;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lab-button:hover {
+    background-color: #fff;
+}
+
+.lab-button-alt {
+    background-color: #55acee;
+}
+
+.lab-output {
+    min-height: 8rem;
+    margin: 0;
+    padding: 0.8rem;
+    border: 1px dashed #f8f6b0;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.35);
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    overflow-wrap: anywhere;
+}
+
+.lab-message {
+    min-height: 1.5rem;
+    margin: 0.6rem 0 0 0;
+    font-size: 0.9rem;
+    color: #b6ffb6;
+}
+
+/* Three tip cards: 3 columns on desktop, 1 column on small screens */
+.lab-tips {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 2.5rem auto 0 auto;
+    padding: 0 1.5rem;
+}
+
+.lab-tip {
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, 0.55);
+    padding: 1rem;
+}
+
+.lab-tip h3 {
+    font-family: 'Anton', sans-serif;
+    color: #f8bd08;
+    text-shadow: 2px 2px 0px navy;
+    font-size: 1.6rem;
+    margin: 0 0 0.4rem 0;
+}
+
+.lab-tip p {
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+@media (max-width: 767.98px) {
+    .lab-layout,
+    .lab-tips {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- AI Images list: alternate the picture side ---------- */
+/* FIX: before this rule every picture was on the left. row-reverse flips the order
+   of the picture and the text in even rows. It is limited to 768px and wider because
+   below that the rows are stacked (picture on top) by the rule in section 13. */
+@media (min-width: 768px) {
+    .ai-row:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+}

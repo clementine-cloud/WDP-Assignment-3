@@ -1,0 +1,87 @@
+@{
+    ViewData["Title"] = "Prompt Lab";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/promptlab.css" asp-append-version="true" />
+}
+
+<div class="parallax">
+    <section class="lab-page">
+        <h1 class="main-heading no-stroke">AI Prompt Lab</h1>
+        <p class="lab-intro">
+            A good prompt is half of every AI artwork. Describe your idea, choose a style, and the lab
+            builds a detailed prompt you can paste into any AI image tool :)
+        </p>
+
+        <div class="lab-layout">
+            <div class="lab-card">
+                <h2>1. Build your prompt</h2>
+
+                <label for="labSubject">What do you want to see?</label>
+                <textarea id="labSubject" rows="3" placeholder="e.g. a lighthouse on a cliff during a storm"></textarea>
+
+                <label for="labMedium">Art medium</label>
+                <select id="labMedium">
+                    <option value="oil painting">Oil painting</option>
+                    <option value="watercolour painting">Watercolour</option>
+                    <option value="digital illustration">Digital illustration</option>
+                    <option value="3D render">3D render</option>
+                    <option value="pencil sketch">Pencil sketch</option>
+                    <option value="cinematic photograph">Cinematic photograph</option>
+                </select>
+
+                <label for="labMood">Mood</label>
+                <select id="labMood">
+                    <option value="calm and peaceful">Calm</option>
+                    <option value="dramatic and intense">Dramatic</option>
+                    <option value="dreamy and magical">Dreamy</option>
+                    <option value="dark and mysterious">Mysterious</option>
+                    <option value="bright and joyful">Joyful</option>
+                </select>
+
+                <label for="labLighting">Lighting</label>
+                <select id="labLighting">
+                    <option value="soft golden-hour light">Golden hour</option>
+                    <option value="moody low-key lighting">Low key</option>
+                    <option value="bright studio lighting">Studio</option>
+                    <option value="glowing neon light">Neon</option>
+                    <option value="natural daylight">Daylight</option>
+                </select>
+
+                <div class="lab-check">
+                    <input type="checkbox" id="labDetail" checked />
+                    <label for="labDetail">Add quality words (highly detailed, sharp focus)</label>
+                </div>
+
+                <button type="button" id="labBuild" class="lab-button">Build my prompt</button>
+            </div>
+
+            <div class="lab-card">
+                <h2>2. Your prompt</h2>
+                <p id="labOutput" class="lab-output" aria-live="polite">Your finished prompt will appear here.</p>
+                <button type="button" id="labCopy" class="lab-button lab-button-alt">Copy prompt</button>
+                <p id="labMessage" class="lab-message" aria-live="polite"></p>
+            </div>
+        </div>
+
+        <div class="lab-tips">
+            <article class="lab-tip">
+                <h3>Be specific</h3>
+                <p>&ldquo;A red fox&rdquo; is vague. &ldquo;A red fox curled up in autumn leaves&rdquo; gives the AI something to draw.</p>
+            </article>
+            <article class="lab-tip">
+                <h3>Name the style</h3>
+                <p>Naming a medium such as watercolour or oil paint changes the texture of the whole picture.</p>
+            </article>
+            <article class="lab-tip">
+                <h3>Try again</h3>
+                <p>Change one word at a time and compare the results. Small edits teach you what each word does.</p>
+            </article>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/promptlab.js" asp-append-version="true"></script>
+}

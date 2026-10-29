@@ -1,0 +1,76 @@
+@{
+    // The Register / Login pages come from the Identity library (area "Identity").
+    // They get an extra CSS class so they can be styled dark like the sample layout.
+    var isIdentityPage = string.Equals(ViewContext.RouteData.Values["area"]?.ToString(), "Identity", StringComparison.OrdinalIgnoreCase);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ArtAI</title>
+
+    @* Google Fonts: Anton (headings), Montserrat (body), Lato, Niconne and Oxygen (sub-headings) *@
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lato&family=Montserrat:ital,wght@0,400;0,700;1,400&family=Niconne&family=Oxygen&display=swap" rel="stylesheet" />
+
+    @* Font Awesome: the five icons in the footer *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @* Pages can add their own external style sheet here (used by the Prompt Lab page) *@
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header>
+        @* navbar-expand-sm: full menu from 576px up, hamburger button below 576px *@
+        <nav class="navbar navbar-expand-sm navbar-dark site-nav">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ArtAI</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu"
+                        aria-controls="mainMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainMenu">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="AIImages" asp-action="Index">AI Images</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="PromptLab">Prompt Lab</a></li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="@(isIdentityPage ? "main-identity" : "main-site")">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <nav class="footer-links" aria-label="Footer">
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-area="" asp-controller="AIImages" asp-action="Index">AI Images</a>
+            <a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+            <a asp-area="" asp-controller="Home" asp-action="PromptLab">Prompt Lab</a>
+        </nav>
+        <ul class="footer-icons">
+            <li><a class="icon-google" href="https://www.google.com" target="_blank" rel="noopener" aria-label="Google"><i class="fa-brands fa-google"></i></a></li>
+            <li><a class="icon-youtube" href="https://www.youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a></li>
+            <li><a class="icon-twitter" href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a></li>
+            <li><a class="icon-facebook" href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a></li>
+            <li><a class="icon-linkedin" href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
+        </ul>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @* All of our own JavaScript lives in the external file site.js (no inline scripts allowed) *@
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

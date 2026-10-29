@@ -1,0 +1,50 @@
+@model IEnumerable<AIImage>
+@{
+    ViewData["Title"] = "Home";
+    var loggedIn = User.Identity?.IsAuthenticated ?? false;
+}
+
+@* One wrapper holds the fixed background picture (parallax scrolling) for the whole page *@
+<div class="parallax">
+
+    <section class="hero">
+        <h1 class="main-heading">AI in Creative Arts</h1>
+        <p class="hero-text">
+            Artificial intelligence is now a creative partner. Generative models can turn just a few written
+            words into paintings, songs and literature, thus helping artists explore new styles and implement their ideas
+            faster. While also raising some big questions about originality and ownership in art.
+            <br><em>Where imagination meets algorithms</em>
+        </p>
+    </section>
+
+    @* The three information blocks (AI art, music and writing) are built by JavaScript in site.js *@
+    <section id="home-blocks" class="home-blocks" aria-label="AI creative tools"></section>
+
+    <section class="upload-section">
+        <h2 class="upload-heading">Upload AI Images</h2>
+        @if (loggedIn)
+        {
+            <p class="upload-text">
+                <a asp-controller="AIImages" asp-action="Create" class="upload-button">Click here to upload a new AI image.</a>
+            </p>
+        }
+        else
+        {
+            <p class="upload-text">
+                Please <a asp-area="Identity" asp-page="/Account/Login">login</a> or
+                <a asp-area="Identity" asp-page="/Account/Register">register</a> to upload your AI images.
+            </p>
+        }
+
+        @* One square per uploaded image, most-liked first. Clicking jumps to that block on the AI Images page. *@
+        <div class="thumb-grid">
+            @foreach (var item in Model)
+            {
+                <a class="ai-thumb" asp-controller="AIImages" asp-action="Index" asp-fragment="@($"block-{item.Id}")" title="@item.ImageGenerator">
+                    <span class="ai-thumb-label">@item.ImageGenerator</span>
+                    <img src="@Url.Content(item.ImageUrl)" alt="AI image made with @item.ImageGenerator" loading="lazy" />
+                </a>
+            }
+        </div>
+    </section>
+</div>

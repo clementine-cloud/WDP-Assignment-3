@@ -1,0 +1,26 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+    int? statusCode = ViewBag.StatusCode as int?;
+}
+
+<div class="parallax">
+    <section class="error-page">
+        <h1 class="main-heading no-stroke">@(statusCode == 404 ? "Page not found" : "Something went wrong")</h1>
+        <p class="error-text">
+            @if (statusCode == 404)
+            {
+                <text>Sorry, we could not find that page.</text>
+            }
+            else
+            {
+                <text>Sorry, an unexpected problem happened. Please try again.</text>
+            }
+        </p>
+        @if (Model.ShowRequestId)
+        {
+            <p class="error-id">Request ID: <code>@Model.RequestId</code></p>
+        }
+        <p class="error-text"><a asp-controller="Home" asp-action="Index">Back to the Home page</a></p>
+    </section>
+</div>
